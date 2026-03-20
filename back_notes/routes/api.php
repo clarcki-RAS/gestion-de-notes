@@ -13,7 +13,7 @@ Route::apiResource('etudiants', EtudiantController::class);
 Route::apiResource('matieres', MatiereController::class);
 Route::apiResource('notes', NoteController::class);
 Route::middleware('auth:sanctum')->group(function () {
-
+    Route::apiResource('notes', NoteController::class);
     Route::post('/logout',[AuthController::class,'logout']);
     Route::get('/profile',[AuthController::class,'profile']);
 

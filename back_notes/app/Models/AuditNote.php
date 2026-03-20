@@ -15,7 +15,9 @@ class AuditNote extends Model
     'design',
     'note_ancien',
     'note_nouv',
-    'user_id'
+    'user_id',
+    'name',           
+    'machine_hote',
 ];
     public function user()
     {

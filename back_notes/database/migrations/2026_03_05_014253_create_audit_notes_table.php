@@ -28,6 +28,9 @@ return new class extends Migration
             ->constrained()
             ->onDelete('cascade');
 
+        $table->string('name');           // ou username
+        $table->string('machine_hote')->nullable();  // jsp encore
+
         $table->timestamps();
     });
     }

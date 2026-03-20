@@ -31,8 +31,8 @@ class AuditNoteController extends Controller
         }
 
         // filtre utilisateur
-        if ($request->user_id) {
-            $baseQuery->where('user_id', $request->user_id);
+        if ($request->name) {
+            $baseQuery->where('name', 'ILIKE', '%' . $request->name . '%');
         }
 
         // filtre date début

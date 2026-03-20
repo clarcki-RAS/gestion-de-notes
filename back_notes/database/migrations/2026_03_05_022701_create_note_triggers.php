@@ -1,9 +1,6 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
-
+use Illuminate\Support\Facades\DB;
 return new class extends Migration
 {
     /**
@@ -18,10 +15,9 @@ return new class extends Migration
         v_user_id bigint;
         v_nom text;
         v_design text;
-        v_note_old numeric;
-        v_note_new numeric;
+        v_name text;
+        v_machine_hote text;
     BEGIN
-
         -- récupérer user connecté
         BEGIN
             v_user_id := current_setting(\'app.current_user_id\')::bigint;
@@ -30,11 +26,25 @@ return new class extends Migration
                 v_user_id := NULL;
         END;
 
-        IF (TG_OP = \'INSERT\') THEN
+        -- récupérer le name de l\'utilisateur
+        BEGIN
+            SELECT name INTO v_name FROM users WHERE id = v_user_id;
+        EXCEPTION
+            WHEN OTHERS THEN
+                v_name := NULL;
+        END;
 
+        -- récupérer la machine hote
+        BEGIN
+            v_machine_hote := current_setting(\'app.current_machine_hote\', true);
+        EXCEPTION
+            WHEN OTHERS THEN
+                v_machine_hote := NULL;
+        END;
+
+        IF (TG_OP = \'INSERT\') THEN
             SELECT nom INTO v_nom FROM etudiants WHERE id = NEW.etudiant_id;
             SELECT design INTO v_design FROM matieres WHERE id = NEW.matiere_id;
-
             INSERT INTO audit_notes(
                 type_operation,
                 date_mise_a_jour,
@@ -44,6 +54,8 @@ return new class extends Migration
                 note_ancien,
                 note_nouv,
                 user_id,
+                name,
+                machine_hote,
                 created_at,
                 updated_at
             )
@@ -56,15 +68,14 @@ return new class extends Migration
                 NULL,
                 NEW.note,
                 v_user_id,
+                v_name,
+                v_machine_hote,
                 now(),
                 now()
             );
-
         ELSIF (TG_OP = \'UPDATE\') THEN
-
             SELECT nom INTO v_nom FROM etudiants WHERE id = NEW.etudiant_id;
             SELECT design INTO v_design FROM matieres WHERE id = NEW.matiere_id;
-
             INSERT INTO audit_notes(
                 type_operation,
                 date_mise_a_jour,
@@ -74,6 +85,8 @@ return new class extends Migration
                 note_ancien,
                 note_nouv,
                 user_id,
+                name,
+                machine_hote,
                 created_at,
                 updated_at
             )
@@ -86,15 +99,14 @@ return new class extends Migration
                 OLD.note,
                 NEW.note,
                 v_user_id,
+                v_name,
+                v_machine_hote,
                 now(),
                 now()
             );
-
         ELSIF (TG_OP = \'DELETE\') THEN
-
             SELECT nom INTO v_nom FROM etudiants WHERE id = OLD.etudiant_id;
             SELECT design INTO v_design FROM matieres WHERE id = OLD.matiere_id;
-
             INSERT INTO audit_notes(
                 type_operation,
                 date_mise_a_jour,
@@ -104,6 +116,8 @@ return new class extends Migration
                 note_ancien,
                 note_nouv,
                 user_id,
+                name,
+                machine_hote,
                 created_at,
                 updated_at
             )
@@ -116,10 +130,11 @@ return new class extends Migration
                 OLD.note,
                 NULL,
                 v_user_id,
+                v_name,
+                v_machine_hote,
                 now(),
                 now()
             );
-
         END IF;
 
         -- recalcul moyenne
@@ -131,7 +146,6 @@ return new class extends Migration
             WHERE n.etudiant_id = COALESCE(NEW.etudiant_id, OLD.etudiant_id)
         )
         WHERE id = COALESCE(NEW.etudiant_id, OLD.etudiant_id);
-
         RETURN NULL;
     END;
     $$ LANGUAGE plpgsql;
