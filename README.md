@@ -18,9 +18,6 @@ Application web fullstack permettant de gérer les notes et calculer automatique
 ## 🔗 Architecture
 Frontend (Next.js) → API Laravel → PostgreSQL
 
-## 📸 Screenshots
-(ajoute 2–3 images)
-
 ## ▶️ Installation
 
 ### Backend
