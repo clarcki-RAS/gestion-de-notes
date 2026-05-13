@@ -12,7 +12,7 @@ Application web fullstack permettant de gérer les notes et calculer automatique
 ## ⚙️ Fonctionnalités
 - Gestion des étudiants
 - Ajout/modification des notes
-- Calcul automatique des moyennes
+- Calcul automatique des moyennes /utilisation  des triggers
 - API REST sécurisée
 
 ## 🔗 Architecture
