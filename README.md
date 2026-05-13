@@ -20,14 +20,15 @@ Frontend (Next.js) → API Laravel → PostgreSQL
 
 ## ▶️ Installation
 
-### Backend
+### Backend & frontend
 ```bash
 cd backend
 composer install
 php artisan serve
 
-### frontend
-```bash
 cd e-note-front
-Installer les dépendances
-npm install ou yarn install
+npm install
+# ou
+yarn install
+
+npm run dev
