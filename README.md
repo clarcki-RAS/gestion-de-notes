@@ -100,12 +100,12 @@ npm run dev
 <div align="center">
 
 ## 👨‍🎓 User Interface
-<img src="assets/user-interface.png" width="700" alt="Interface utilisateur"/>
+<img src="assets/interface utilisateur.png" width="700" alt="Interface utilisateur"/>
 
 <br><br>
 
 ## 🛠️ Admin Dashboard
-<img src="assets/admin-dashboard.png" width="700" alt="Dashboard administrateur"/>
+<img src="assets/Adminpage.png" width="700" alt="Dashboard administrateur"/>
 
 </div>
 
